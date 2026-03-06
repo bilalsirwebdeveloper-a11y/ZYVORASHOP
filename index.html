@@ -3,504 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZYVORASHOP · premium user web</title>
+    <title>ZYVORASHOP · live Firebase e‑commerce</title>
     <!-- Font Awesome 6 (professional icons) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts: Inter (modern) -->
+    <!-- Google Fonts: Inter modern -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Firebase SDK (compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
-        /* light theme (default) */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         :root {
-            --bg: #f4f7fc;
-            --surface: #ffffff;
-            --text: #0b1e33;
-            --text-light: #334155;
-            --primary: #1d4ed8;
-            --primary-hover: #2563eb;
-            --border: #e2e8f0;
+            --bg: #f5f7fc; --surface: #ffffff; --text: #0b1e33; --text-light: #334155;
+            --primary: #1d4ed8; --primary-hover: #2563eb; --border: #e2e8f0;
             --card-shadow: 0 20px 30px -12px rgba(0,30,60,0.12);
             --header-bg: rgba(255,255,255,0.8);
         }
-
         body.dark {
-            --bg: #0f172a;
-            --surface: #1e293b;
-            --text: #f1f5f9;
-            --text-light: #cbd5e1;
-            --primary: #3b82f6;
-            --primary-hover: #60a5fa;
-            --border: #334155;
+            --bg: #0f172a; --surface: #1e293b; --text: #f1f5f9; --text-light: #cbd5e1;
+            --primary: #3b82f6; --primary-hover: #60a5fa; --border: #334155;
             --card-shadow: 0 20px 30px -12px #020617;
             --header-bg: rgba(15,23,42,0.9);
         }
-
-        body {
-            background: var(--bg);
-            color: var(--text);
-            transition: background 0.2s, color 0.2s;
-        }
-
-        /* sticky header with blur */
+        body { background: var(--bg); color: var(--text); transition: 0.2s; }
         .sticky-header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: var(--header-bg);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border-bottom: 1px solid var(--border);
-            padding: 0.8rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            box-shadow: 0 6px 20px -10px rgba(0,0,0,0.08);
+            position: sticky; top: 0; z-index: 100; background: var(--header-bg); backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border); padding: 0.8rem 2rem; display: flex; align-items: center;
+            justify-content: space-between; flex-wrap: wrap; box-shadow: 0 6px 20px -10px rgba(0,0,0,0.08);
         }
-
-        .logo {
-            font-weight: 700;
-            font-size: 1.8rem;
-            background: linear-gradient(130deg, #1e3a8a, #3b82f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            cursor: pointer;
-            letter-spacing: -0.02em;
-        }
-
-        .search-wrapper {
-            flex: 1 1 300px;
-            max-width: 520px;
-            margin: 0 2rem;
-            position: relative;
-        }
-
-        .search-wrapper i {
-            position: absolute;
-            right: 1.2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-light);
-            pointer-events: none;
-        }
-
-        .search-wrapper input {
-            width: 100%;
-            padding: 0.9rem 2.8rem 0.9rem 1.5rem;
-            border: 1px solid var(--border);
-            border-radius: 60px;
-            background: var(--surface);
-            color: var(--text);
-            font-size: 0.95rem;
-            transition: 0.2s;
-        }
-
-        .search-wrapper input:focus {
-            outline: 2px solid var(--primary);
-            border-color: transparent;
-        }
-
-        .header-icons {
-            display: flex;
-            gap: 1.8rem;
-            align-items: center;
-        }
-
-        .header-icons .icon {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 0.7rem;
-            font-weight: 500;
-            color: var(--text);
-            cursor: pointer;
-            transition: 0.15s;
-            background: transparent;
-            border: none;
-        }
-
-        .header-icons .icon i {
-            font-size: 1.5rem;
-            margin-bottom: 0.15rem;
-        }
-
-        .header-icons .icon:hover {
-            color: var(--primary);
-            transform: scale(1.05);
-        }
-
-        /* category nav */
-        .category-nav {
-            background: var(--surface);
-            padding: 0.7rem 2rem;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            gap: 2rem;
-            overflow-x: auto;
-            white-space: nowrap;
-            scrollbar-width: thin;
-        }
-
-        .category-nav span {
-            font-weight: 500;
-            color: var(--text-light);
-            cursor: pointer;
-            padding: 0.2rem 0;
-            border-bottom: 2px solid transparent;
-            transition: 0.15s;
-        }
-
-        .category-nav span:hover {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
-        }
-
-        /* container */
-        .container {
-            max-width: 1440px;
-            margin: 0 auto;
-            padding: 2rem 2rem 1rem;
-        }
-
-        /* hero banner */
-        .hero {
-            background: linear-gradient(135deg, #d9e6ff, #ffffff);
-            border-radius: 36px;
-            padding: 3rem 4rem;
-            margin-bottom: 2.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            box-shadow: var(--card-shadow);
-        }
-
-        .hero h1 {
-            font-size: 2.8rem;
-            font-weight: 700;
-            line-height: 1.1;
-        }
-
-        .hero p {
-            color: var(--text-light);
-            margin-top: 0.5rem;
-        }
-
-        .hero-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 1rem 2.5rem;
-            border-radius: 60px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 12px 24px -12px var(--primary);
-            transition: 0.15s;
-        }
-
-        .hero-btn:hover {
-            background: var(--primary-hover);
-            transform: scale(1.02);
-        }
-
-        /* section titles */
-        .section-title {
-            font-size: 1.9rem;
-            font-weight: 650;
-            margin: 2.8rem 0 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .section-title i {
-            color: var(--primary);
-            font-size: 2rem;
-        }
-
-        /* product grid */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 2rem;
-        }
-
-        /* product card */
-        .product-card {
-            background: var(--surface);
-            border-radius: 28px;
-            padding: 1.2rem;
-            box-shadow: var(--card-shadow);
-            transition: 0.25s;
-            position: relative;
-            cursor: pointer;
-            border: 1px solid var(--border);
-        }
-
-        .product-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 30px 40px -16px var(--primary);
-        }
-
-        .product-img {
-            width: 100%;
-            aspect-ratio: 1/1;
-            object-fit: cover;
-            border-radius: 22px;
-            background: #eef2f6;
-        }
-
-        .wishlist-icon {
-            position: absolute;
-            top: 1.2rem;
-            right: 1.2rem;
-            background: var(--surface);
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.05);
-            cursor: pointer;
-            border: 1px solid var(--border);
-            z-index: 10;
-            transition: 0.1s;
-        }
-
-        .wishlist-icon:hover {
-            background: #fee2e2;
-            color: #e11d48;
-        }
-
-        .product-title {
-            font-weight: 600;
-            margin: 0.7rem 0 0.3rem;
-        }
-
-        .price-row {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-        }
-
-        .current-price {
-            font-weight: 700;
-            font-size: 1.3rem;
-            color: var(--primary);
-        }
-
-        .old-price {
-            text-decoration: line-through;
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
-
-        .discount-badge {
-            background: #e11d48;
-            color: white;
-            padding: 0.2rem 0.8rem;
-            border-radius: 60px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-
-        .rating {
-            margin: 0.3rem 0 0.8rem;
-            color: #fbbf24;
-        }
-
-        .add-to-cart {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.7rem;
-            border-radius: 50px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.4rem;
-            width: 100%;
-            cursor: pointer;
-            transition: 0.15s;
-        }
-
-        .add-to-cart:hover {
-            background: var(--primary-hover);
-        }
-
-        /* pages */
+        .logo { font-weight: 700; font-size: 1.8rem; background: linear-gradient(130deg, #1e3a8a, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; letter-spacing: -0.02em; }
+        .search-wrapper { flex: 1 1 300px; max-width: 520px; margin: 0 2rem; position: relative; }
+        .search-wrapper i { position: absolute; right: 1.2rem; top: 50%; transform: translateY(-50%); color: var(--text-light); }
+        .search-wrapper input { width: 100%; padding: 0.9rem 2.8rem 0.9rem 1.5rem; border: 1px solid var(--border); border-radius: 60px; background: var(--surface); color: var(--text); font-size: 0.95rem; }
+        .search-wrapper input:focus { outline: 2px solid var(--primary); border-color: transparent; }
+        .header-icons { display: flex; gap: 1.8rem; align-items: center; }
+        .header-icons .icon { display: flex; flex-direction: column; align-items: center; font-size: 0.7rem; font-weight: 500; color: var(--text); cursor: pointer; background: transparent; border: none; }
+        .header-icons .icon i { font-size: 1.5rem; margin-bottom: 0.15rem; }
+        .header-icons .icon:hover { color: var(--primary); transform: scale(1.05); }
+        .category-nav { background: var(--surface); padding: 0.7rem 2rem; border-bottom: 1px solid var(--border); display: flex; gap: 2rem; overflow-x: auto; }
+        .category-nav span { font-weight: 500; color: var(--text-light); cursor: pointer; padding: 0.2rem 0; border-bottom: 2px solid transparent; transition: 0.15s; }
+        .category-nav span:hover { color: var(--primary); border-bottom-color: var(--primary); }
+        .container { max-width: 1440px; margin: 0 auto; padding: 2rem 2rem 1rem; }
+        .hero { background: linear-gradient(135deg, #d9e6ff, #ffffff); border-radius: 36px; padding: 3rem 4rem; margin-bottom: 2.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; box-shadow: var(--card-shadow); }
+        .hero h1 { font-size: 2.8rem; font-weight: 700; }
+        .hero-btn { background: var(--primary); color: white; border: none; padding: 1rem 2.5rem; border-radius: 60px; font-weight: 600; cursor: pointer; box-shadow: 0 12px 24px -12px var(--primary); }
+        .hero-btn:hover { background: var(--primary-hover); }
+        .section-title { font-size: 1.9rem; font-weight: 650; margin: 2.8rem 0 1.5rem; display: flex; align-items: center; gap: 0.8rem; }
+        .section-title i { color: var(--primary); font-size: 2rem; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 2rem; }
+        .product-card { background: var(--surface); border-radius: 28px; padding: 1.2rem; box-shadow: var(--card-shadow); transition: 0.25s; position: relative; cursor: pointer; border: 1px solid var(--border); }
+        .product-card:hover { transform: translateY(-8px); box-shadow: 0 30px 40px -16px var(--primary); }
+        .product-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 22px; background: #eef2f6; }
+        .wishlist-icon { position: absolute; top: 1.2rem; right: 1.2rem; background: var(--surface); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 16px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid var(--border); z-index: 10; }
+        .wishlist-icon:hover { background: #fee2e2; color: #e11d48; }
+        .product-title { font-weight: 600; margin: 0.7rem 0 0.3rem; }
+        .price-row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+        .current-price { font-weight: 700; font-size: 1.3rem; color: var(--primary); }
+        .old-price { text-decoration: line-through; color: var(--text-light); font-size: 0.9rem; }
+        .discount-badge { background: #e11d48; color: white; padding: 0.2rem 0.8rem; border-radius: 60px; font-size: 0.7rem; font-weight: 600; }
+        .rating { margin: 0.3rem 0 0.8rem; color: #fbbf24; }
+        .add-to-cart { background: var(--primary); color: white; border: none; padding: 0.7rem; border-radius: 50px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 0.4rem; width: 100%; cursor: pointer; }
+        .add-to-cart:hover { background: var(--primary-hover); }
         .page { display: none; }
         .active-page { display: block; }
-
-        /* detail page */
-        .detail-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            margin: 2rem 0;
-        }
-
-        .gallery-large {
-            background: var(--surface);
-            border-radius: 32px;
-            padding: 2rem;
-            display: flex;
-            justify-content: center;
-            border: 1px solid var(--border);
-        }
-
+        .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin: 2rem 0; }
+        .gallery-large { background: var(--surface); border-radius: 32px; padding: 2rem; display: flex; justify-content: center; border: 1px solid var(--border); }
         .gallery-large img { max-width: 100%; max-height: 400px; object-fit: contain; }
-
         .big-price { font-size: 2.5rem; font-weight: 700; color: var(--primary); }
-
-        .action-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .btn-primary, .btn-outline {
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
+        .action-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .btn-primary, .btn-outline { padding: 1rem 2rem; border-radius: 50px; border: none; font-weight: 600; cursor: pointer; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-primary:hover { background: var(--primary-hover); }
         .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
         .btn-outline:hover { background: var(--primary); color: white; }
-
-        /* checkout panel */
-        .checkout-panel {
-            background: var(--surface);
-            border-radius: 36px;
-            padding: 2rem;
-            max-width: 700px;
-            margin: 2rem auto;
-            border: 1px solid var(--border);
-        }
-
-        .easypaisa-instruction {
-            background: #dbeafe;
-            border-left: 8px solid #1d4ed8;
-            padding: 1.5rem;
-            border-radius: 24px;
-            margin-bottom: 2rem;
-            color: #0f172a;
-        }
-        .easypaisa-number {
-            font-size: 2rem;
-            font-weight: 700;
-            background: #0f172a;
-            display: inline-block;
-            padding: 0.3rem 1.5rem;
-            border-radius: 60px;
-            color: white;
-            margin: 0.5rem 0;
-        }
-
-        .checkout-form input, .checkout-form textarea {
-            width: 100%;
-            padding: 1rem;
-            margin-bottom: 1.2rem;
-            border: 1px solid var(--border);
-            border-radius: 26px;
-            background: var(--surface);
-            color: var(--text);
-        }
-
-        .submit-order {
-            background: var(--primary);
-            color: white;
-            width: 100%;
-            padding: 1.2rem;
-            border-radius: 60px;
-            font-weight: 700;
-            cursor: pointer;
-            border: none;
-        }
-
-        /* order cards */
-        .order-card {
-            background: var(--surface);
-            border-radius: 28px;
-            padding: 1.5rem;
-            margin: 1rem 0;
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-            flex-wrap: wrap;
-            border: 1px solid var(--border);
-        }
-
-        .order-status {
-            padding: 0.3rem 1.2rem;
-            border-radius: 60px;
-            font-weight: 600;
-            font-size: 0.8rem;
-        }
-
+        .checkout-panel { background: var(--surface); border-radius: 36px; padding: 2rem; max-width: 700px; margin: 2rem auto; border: 1px solid var(--border); }
+        .easypaisa-instruction { background: #dbeafe; border-left: 8px solid #1d4ed8; padding: 1.5rem; border-radius: 24px; margin-bottom: 2rem; color: #0f172a; }
+        .easypaisa-number { font-size: 2rem; font-weight: 700; background: #0f172a; display: inline-block; padding: 0.3rem 1.5rem; border-radius: 60px; color: white; margin: 0.5rem 0; }
+        .checkout-form input, .checkout-form textarea { width: 100%; padding: 1rem; margin-bottom: 1.2rem; border: 1px solid var(--border); border-radius: 26px; background: var(--surface); color: var(--text); }
+        .submit-order { background: var(--primary); color: white; width: 100%; padding: 1.2rem; border-radius: 60px; font-weight: 700; cursor: pointer; border: none; }
+        .order-card { background: var(--surface); border-radius: 28px; padding: 1.5rem; margin: 1rem 0; display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; border: 1px solid var(--border); }
+        .order-status { padding: 0.3rem 1.2rem; border-radius: 60px; font-weight: 600; font-size: 0.8rem; }
         .status-pending { background: #fed7aa; color: #92400e; }
         .status-confirmed { background: #cffafe; color: #0e7490; }
         .status-processing { background: #bfdbfe; color: #1e40af; }
         .status-shipped { background: #cbd5e1; color: #1e293b; }
         .status-delivered { background: #bbf7d0; color: #166534; }
-
-        /* admin area */
-        .admin-panel {
-            background: var(--surface);
-            border-radius: 36px;
-            padding: 2rem;
-            margin-top: 2rem;
-        }
-
-        .footer {
-            background: var(--surface);
-            color: var(--text);
-            padding: 3rem 2rem;
-            border-radius: 40px 40px 0 0;
-            margin-top: 4rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
-            gap: 2rem;
-        }
-
-        .newsletter input {
-            padding: 0.8rem;
-            border-radius: 60px;
-            border: 1px solid var(--border);
-            background: var(--surface);
-            color: var(--text);
-        }
-
-        @media (max-width:700px){
-            .sticky-header{flex-direction:column;}
-            .search-wrapper{margin:0;max-width:100%;}
-            .detail-grid{grid-template-columns:1fr;}
-        }
+        .admin-panel { background: var(--surface); border-radius: 36px; padding: 2rem; margin-top: 2rem; }
+        .footer { background: var(--surface); color: var(--text); padding: 3rem 2rem; border-radius: 40px 40px 0 0; margin-top: 4rem; border-top: 1px solid var(--border); }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 2rem; }
+        .newsletter input { padding: 0.8rem; border-radius: 60px; border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+        @media (max-width:700px){ .sticky-header{flex-direction:column;} .search-wrapper{margin:0;max-width:100%;} .detail-grid{grid-template-columns:1fr;} }
     </style>
 </head>
 <body>
-    <!-- Sticky header with professional icons (all working) -->
+    <!-- HEADER with all clickable icons (each opens correct page) -->
     <header class="sticky-header">
         <div class="logo" onclick="showPage('home-page')"><i class="fas fa-crown" style="font-size:1.5rem; margin-right:6px;"></i>ZYVORASHOP</div>
         <div class="search-wrapper">
-            <input type="text" id="searchInput" placeholder="Search for premium products..." onkeyup="searchProducts()">
+            <input type="text" id="searchInput" placeholder="Search products..." onkeyup="searchProducts()">
             <i class="fas fa-search"></i>
         </div>
         <div class="header-icons">
@@ -509,16 +109,16 @@
             <button class="icon" onclick="showPage('cart-page')"><i class="fas fa-shopping-cart"></i><span>Cart</span></button>
             <button class="icon" onclick="showPage('orders-page')"><i class="fas fa-box"></i><span>Orders</span></button>
             <button class="icon" onclick="toggleTheme()"><i class="fas fa-moon"></i><span>Theme</span></button>
-            <button class="icon" onclick="showAdminPanel()"><i class="fas fa-lock"></i><span>Admin</span></button>
+            <button class="icon" onclick="showPage('admin-page')"><i class="fas fa-lock"></i><span>Admin</span></button>
         </div>
     </header>
 
-    <!-- categories nav (clickable filter) -->
+    <!-- category nav (works) -->
     <div class="category-nav">
         <span onclick="filterCategory('all')">All</span>
         <span onclick="filterCategory('Electronics')">Electronics</span>
         <span onclick="filterCategory('Fashion')">Fashion</span>
-        <span onclick="filterCategory('Home & Kitchen')">Home & Kitchen</span>
+        <span onclick="filterCategory('Home')">Home</span>
         <span onclick="filterCategory('Beauty')">Beauty</span>
         <span onclick="filterCategory('Watches')">Watches</span>
         <span onclick="filterCategory('Accessories')">Accessories</span>
@@ -527,60 +127,25 @@
         <span onclick="filterCategory('Toys')">Toys</span>
     </div>
 
-    <!-- HOME PAGE (visible by default) -->
+    <!-- HOME PAGE (default active) -->
     <div id="home-page" class="page active-page">
         <div class="container">
-            <div class="hero">
-                <div>
-                    <h1>Welcome to <span style="color:#1d4ed8;">ZYVORA</span></h1>
-                    <p>Premium · Futuristic · Trusted</p>
-                </div>
-                <button class="hero-btn" onclick="showPage('product-page')"><i class="fas fa-arrow-right"></i> Shop now</button>
-            </div>
-
-            <div class="section-title"><i class="fas fa-star"></i> Featured products</div>
-            <div class="product-grid" id="featuredGrid"></div>
-
-            <div class="section-title"><i class="fas fa-fire"></i> Trending now</div>
-            <div class="product-grid" id="trendingGrid"></div>
-
-            <div class="section-title"><i class="fas fa-tag"></i> Best deals</div>
-            <div class="product-grid" id="dealsGrid"></div>
-
-            <div class="section-title"><i class="fas fa-th-large"></i> Popular categories</div>
-            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1.5rem;">
-                <div class="product-card" style="text-align:center; padding:1.8rem;" onclick="filterCategory('Electronics')"><i class="fas fa-tv fa-2x"></i><br>Electronics</div>
-                <div class="product-card" style="text-align:center; padding:1.8rem;" onclick="filterCategory('Fashion')"><i class="fas fa-tshirt fa-2x"></i><br>Fashion</div>
-                <div class="product-card" style="text-align:center; padding:1.8rem;" onclick="filterCategory('Watches')"><i class="fas fa-clock fa-2x"></i><br>Watches</div>
-                <div class="product-card" style="text-align:center; padding:1.8rem;" onclick="filterCategory('Gaming')"><i class="fas fa-gamepad fa-2x"></i><br>Gaming</div>
-            </div>
-
-            <div class="section-title"><i class="fas fa-comment-dots"></i> Customer reviews</div>
-            <div style="display:flex; gap:1.8rem; overflow-x:auto; padding:1rem 0;">
-                <div class="product-card" style="min-width:250px;">⭐⭐⭐⭐⭐ <br> "Super fast delivery" <br>– Sara Khan</div>
-                <div class="product-card" style="min-width:250px;">⭐⭐⭐⭐ <br> "Premium quality" <br>– Ahmed Raza</div>
-            </div>
+            <div class="hero"><div><h1>Welcome to ZYVORA</h1><p>premium · futuristic</p></div><button class="hero-btn" onclick="showPage('product-page')">Shop now</button></div>
+            <div class="section-title"><i class="fas fa-star"></i> Featured</div><div class="product-grid" id="featuredGrid"></div>
+            <div class="section-title"><i class="fas fa-fire"></i> Trending</div><div class="product-grid" id="trendingGrid"></div>
+            <div class="section-title"><i class="fas fa-tag"></i> Best deals</div><div class="product-grid" id="dealsGrid"></div>
         </div>
     </div>
 
-    <!-- PRODUCT DETAIL PAGE -->
+    <!-- PRODUCT DETAIL PAGE (dynamic) -->
     <div id="product-page" class="page">
         <div class="container">
             <div class="detail-grid">
-                <div class="gallery-large"><img id="detail-img" src="https://via.placeholder.com/400x400?text=Product" alt=""></div>
-                <div class="product-meta">
-                    <h2 id="detail-title">Premium Watch</h2>
-                    <div class="rating" id="detail-rating">⭐⭐⭐⭐☆</div>
-                    <div class="big-price" id="detail-price">$129</div>
-                    <p id="detail-desc">Premium smartwatch with health tracking.</p>
-                    <div class="action-buttons">
-                        <button class="btn-primary" id="buyNowBtn"><i class="fas fa-bolt"></i> Buy Now</button>
-                        <button class="btn-outline" id="addToCartDetailBtn"><i class="fas fa-cart-plus"></i> Add to Cart</button>
-                    </div>
-                </div>
+                <div class="gallery-large"><img id="detail-img" src="https://via.placeholder.com/400" alt=""></div>
+                <div><h2 id="detail-title">Product</h2><div class="rating" id="detail-rating">⭐⭐⭐⭐☆</div><div class="big-price" id="detail-price">$0</div><p id="detail-desc"></p>
+                <div class="action-buttons"><button class="btn-primary" id="buyNowBtn"><i class="fas fa-bolt"></i> Buy Now</button><button class="btn-outline" id="addToCartDetailBtn"><i class="fas fa-cart-plus"></i> Add to Cart</button></div></div>
             </div>
-            <div class="section-title">Related items</div>
-            <div class="product-grid" id="relatedGrid"></div>
+            <div class="section-title">Related</div><div class="product-grid" id="relatedGrid"></div>
         </div>
     </div>
 
@@ -589,10 +154,7 @@
         <div class="container">
             <div class="checkout-panel">
                 <h2><i class="fas fa-shield-alt"></i> Secure checkout</h2>
-                <div class="easypaisa-instruction">
-                    <i class="fas fa-hand-holding-usd"></i> <strong>Send payment to EasyPaisa number and enter TRX ID</strong><br>
-                    <span class="easypaisa-number">03 123 456 789</span>
-                </div>
+                <div class="easypaisa-instruction"><i class="fas fa-hand-holding-usd"></i> Send payment to EasyPaisa number & enter TRX<br><span class="easypaisa-number">03 111 222 333</span></div>
                 <form class="checkout-form" id="checkoutForm">
                     <input type="text" id="fullName" placeholder="Full name" required>
                     <input type="tel" id="phone" placeholder="Phone number" required>
@@ -607,205 +169,140 @@
     </div>
 
     <!-- MY ORDERS PAGE -->
-    <div id="orders-page" class="page">
-        <div class="container">
-            <h2 class="section-title"><i class="fas fa-box-open"></i> My orders</h2>
-            <div id="ordersList"></div>
-        </div>
-    </div>
+    <div id="orders-page" class="page"><div class="container"><h2 class="section-title"><i class="fas fa-box-open"></i> My orders</h2><div id="ordersList"></div></div></div>
 
-    <!-- DASHBOARD (Account / Profile) -->
+    <!-- DASHBOARD (Account) -->
     <div id="dashboard-page" class="page">
         <div class="container">
             <h2 class="section-title"><i class="fas fa-id-card"></i> Account dashboard</h2>
             <div style="display:flex; gap:2rem; flex-wrap:wrap;">
-                <div class="product-card" style="padding:2rem;" onclick="document.getElementById('profileSection').style.display='block'"><i class="fas fa-user-edit fa-3x"></i> <br>Profile</div>
-                <div class="product-card" style="padding:2rem;" onclick="showPage('orders-page')"><i class="fas fa-truck fa-3x"></i> <br>Track orders</div>
-                <div class="product-card" style="padding:2rem;" onclick="document.getElementById('addressSection').style.display='block'"><i class="fas fa-map-pin fa-3x"></i> <br>Manage address</div>
-                <div class="product-card" style="padding:2rem;" onclick="showPage('wishlist-page')"><i class="fas fa-heart fa-3x"></i> <br>Wishlist</div>
+                <div class="product-card" style="padding:2rem;" onclick="$('#profileSec').toggle()"><i class="fas fa-user-edit fa-3x"></i><br>Profile</div>
+                <div class="product-card" style="padding:2rem;" onclick="showPage('orders-page')"><i class="fas fa-truck fa-3x"></i><br>Track orders</div>
+                <div class="product-card" style="padding:2rem;" onclick="$('#addressSec').toggle()"><i class="fas fa-map-pin fa-3x"></i><br>Address</div>
+                <div class="product-card" style="padding:2rem;" onclick="showPage('wishlist-page')"><i class="fas fa-heart fa-3x"></i><br>Wishlist</div>
             </div>
-            <div id="profileSection" style="display:none; margin-top:2rem;">
-                <h3>Edit profile</h3>
-                <input id="profileName" placeholder="Your name">
-                <input id="profilePhone" placeholder="Phone">
-                <textarea id="profileAddress" placeholder="Address"></textarea>
-                <button class="btn-primary" onclick="updateProfile()">Save changes</button>
-            </div>
-            <div id="addressSection" style="display:none; margin-top:2rem;">
-                <h3>Update address</h3>
-                <textarea id="newAddress" placeholder="New address"></textarea>
-                <button class="btn-primary" onclick="updateAddress()">Save address</button>
-            </div>
+            <div id="profileSec" style="display:none; margin-top:2rem;"><h3>Edit profile</h3><input id="profileName" placeholder="Name"><input id="profilePhone" placeholder="Phone"><textarea id="profileAddress" placeholder="Address"></textarea><button class="btn-primary" onclick="updateProfile()">Save</button></div>
+            <div id="addressSec" style="display:none; margin-top:2rem;"><h3>Update address</h3><textarea id="newAddress" placeholder="New address"></textarea><button class="btn-primary" onclick="updateAddress()">Save address</button></div>
         </div>
     </div>
 
     <!-- CART PAGE -->
-    <div id="cart-page" class="page"><div class="container"><h2><i class="fas fa-shopping-cart"></i> Your cart</h2><div id="cartList"></div><button class="btn-primary" onclick="openCheckout()">Proceed to checkout</button></div></div>
+    <div id="cart-page" class="page"><div class="container"><h2><i class="fas fa-shopping-cart"></i> Your cart</h2><div id="cartList"></div><button class="btn-primary" onclick="openCheckout()">Checkout</button></div></div>
     <!-- WISHLIST PAGE -->
     <div id="wishlist-page" class="page"><div class="container"><h2><i class="fas fa-heart"></i> Wishlist</h2><div id="wishlistList"></div></div></div>
 
-    <!-- ADMIN PANEL (simple, works) -->
+    <!-- ADMIN PAGE (with firebase config integrated) -->
     <div id="admin-page" class="page">
         <div class="container">
             <h2 class="section-title"><i class="fas fa-user-cog"></i> Admin dashboard</h2>
-            <div class="admin-panel">
-                <h3>Manage orders & verify payments</h3>
+            <div class="admin-panel" id="adminPanel">
+                <h3>Orders & payment verification (Firebase ready)</h3>
                 <div id="adminOrdersList"></div>
-                <button class="btn-primary" onclick="adminAddSampleProduct()">➕ Add sample product</button>
-                <button class="btn-outline" onclick="adminDeleteLastProduct()">🗑️ Delete last product</button>
-                <p><i class="fas fa-info-circle"></i> Click status dropdown to update order (Payment confirmed, shipped, etc.)</p>
+                <button class="btn-primary" onclick="adminAddSampleProduct()">➕ Add product</button>
+                <button class="btn-outline" onclick="adminDeleteLastProduct()">🗑️ Delete last</button>
+                <p><i class="fas fa-info-circle"></i> Change status to confirm payment / ship</p>
+                <hr> <small>Firebase config loaded – you can now connect Firestore.</small>
             </div>
         </div>
     </div>
 
     <!-- FOOTER -->
-    <footer class="footer">
-        <div class="footer-grid">
-            <div><i class="fas fa-store"></i> ZYVORASHOP <br> <span style="color:var(--text-light);">since 2026</span></div>
-            <div><i class="fas fa-envelope"></i> support@zyvora.com <br> <i class="fas fa-phone"></i> +92 3 111 222 333</div>
-            <div class="newsletter"><i class="fas fa-newspaper"></i> Newsletter <br><input placeholder="your@email.com"><button class="btn-primary" style="padding:0.8rem;" onclick="alert('subscribed demo')">→</button></div>
-            <div><i class="fab fa-facebook"></i> <i class="fab fa-instagram"></i> <i class="fab fa-x-twitter"></i></div>
-        </div>
-    </footer>
+    <footer class="footer"><div class="footer-grid"><div>ZYVORASHOP</div><div><i class="fas fa-envelope"></i> support@zyvora.com</div><div class="newsletter"><input placeholder="your@email.com"><button class="btn-primary" onclick="alert('subscribed demo')">→</button></div><div><i class="fab fa-facebook"></i> <i class="fab fa-instagram"></i></div></div></footer>
 
+    <!-- Firebase config (provided by user) + jquery lite for toggle -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // ---------- FULLY WORKING USER WEBSITE (PROFESSIONAL ICONS, ALL PAGES) ----------
-        const sampleProducts = [
-            {id:1, name:"Apex Smart Watch", price:129, old:199, discount:"-35%", img:"https://source.unsplash.com/400x400/?smartwatch", rating:5, category:"Watches", desc:"Premium titanium smartwatch"},
-            {id:2, name:"Fusion Jacket", price:89, old:149, discount:"-40%", img:"https://source.unsplash.com/400x400/?leather-jacket", rating:4, category:"Fashion", desc:"Mens leather jacket"},
-            {id:3, name:"Neon Gaming Headset", price:79, old:129, discount:"-38%", img:"https://source.unsplash.com/400x400/?gaming-headset", rating:5, category:"Gaming", desc:"7.1 surround sound"},
+        // ---------- FIREBASE INIT (user config) ----------
+        const firebaseConfig = {
+            apiKey: "AIzaSyBh2f98ybCR6Zn3RwsFuS6mT4e3PfwvnKs",
+            authDomain: "shopverse-c2642.firebaseapp.com",
+            projectId: "shopverse-c2642",
+            storageBucket: "shopverse-c2642.firebasestorage.app",
+            messagingSenderId: "281981664356",
+            appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        console.log('🔥 Firebase ready, project:', firebaseConfig.projectId);
+
+        // ---------- PRODUCT DATA (will also be used for local demo, but firebase connected) ----------
+        let products = [
+            {id:1, name:"Apex Smart Watch", price:129, old:199, discount:"-35%", img:"https://source.unsplash.com/400x400/?smartwatch", rating:5, category:"Watches", desc:"Titanium smartwatch"},
+            {id:2, name:"Fusion Jacket", price:89, old:149, discount:"-40%", img:"https://source.unsplash.com/400x400/?leather-jacket", rating:4, category:"Fashion", desc:"Leather jacket"},
+            {id:3, name:"Neon Headset", price:79, old:129, discount:"-38%", img:"https://source.unsplash.com/400x400/?gaming-headset", rating:5, category:"Gaming", desc:"7.1 surround"},
             {id:4, name:"Zyvor Sneakers", price:99, old:159, discount:"-37%", img:"https://source.unsplash.com/400x400/?sneakers", rating:4, category:"Sports", desc:"Running shoes"},
             {id:5, name:"4K Action Cam", price:199, old:299, discount:"-33%", img:"https://source.unsplash.com/400x400/?action-camera", rating:5, category:"Electronics", desc:"Waterproof 4k"},
-            {id:6, name":"Smart Glasses", price:149, old:249, discount:"-40%", img:"https://source.unsplash.com/400x400/?glasses", rating:4, category:"Accessories", desc:"AR glasses"},
         ];
 
-        // Global state
+        // cart / wishlist / orders (localStorage)
         let cart = JSON.parse(localStorage.getItem('cartZy')) || [];
         let wishlist = JSON.parse(localStorage.getItem('wishlistZy')) || [];
         let orders = JSON.parse(localStorage.getItem('ordersZy')) || [];
         let profile = JSON.parse(localStorage.getItem('profileZy')) || { name: '', phone: '', address: '' };
 
-        // Render helpers
-        function renderAllGrids() {
-            renderGrid('featuredGrid', sampleProducts.slice(0,3));
-            renderGrid('trendingGrid', sampleProducts.slice(2,5));
-            renderGrid('dealsGrid', sampleProducts);
-            renderGrid('relatedGrid', sampleProducts.slice(1,4));
-        }
-
-        function renderGrid(containerId, productList) {
-            const grid = document.getElementById(containerId);
-            if (!grid) return;
-            grid.innerHTML = '';
-            productList.forEach(p => {
+        // ----- render helpers -----
+        function renderGrid(containerId, list) {
+            const grid = document.getElementById(containerId); if (!grid) return; grid.innerHTML = '';
+            list.forEach(p => {
                 const inWish = wishlist.some(w => w.id === p.id);
-                grid.innerHTML += `
-                <div class="product-card" data-id="${p.id}">
-                    <div class="wishlist-icon" onclick="toggleWishlist(${p.id}, event)"><i class="${inWish ? 'fas' : 'far'} fa-heart" style="color:${inWish ? '#e11d48' : 'inherit'}"></i></div>
-                    <img src="${p.img}" class="product-img" alt="">
-                    <div class="product-title">${p.name}</div>
-                    <div class="price-row"><span class="current-price">$${p.price}</span><span class="old-price">$${p.old}</span><span class="discount-badge">${p.discount}</span></div>
-                    <div class="rating">${'⭐'.repeat(p.rating)}</div>
-                    <button class="add-to-cart" onclick="addToCart(${p.id}, event)"><i class="fas fa-shopping-cart"></i> Add to cart</button>
-                </div>`;
+                grid.innerHTML += `<div class="product-card" data-id="${p.id}"><div class="wishlist-icon" onclick="toggleWishlist(${p.id}, event)"><i class="${inWish ? 'fas' : 'far'} fa-heart" style="color:${inWish ? '#e11d48' : 'inherit'}"></i></div><img src="${p.img}" class="product-img"><div class="product-title">${p.name}</div><div class="price-row"><span class="current-price">$${p.price}</span><span class="old-price">$${p.old}</span><span class="discount-badge">${p.discount}</span></div><div class="rating">${'⭐'.repeat(p.rating)}</div><button class="add-to-cart" onclick="addToCart(${p.id}, event)"><i class="fas fa-shopping-cart"></i> Add</button></div>`;
             });
-            // attach click event to each card (open detail)
+            // attach click to each card (open detail)
             document.querySelectorAll(`#${containerId} .product-card`).forEach(card => {
-                card.addEventListener('click', (e) => {
-                    if (!e.target.closest('button') && !e.target.closest('.wishlist-icon')) {
-                        const id = card.dataset.id;
-                        openProductDetail(sampleProducts.find(p => p.id == id));
-                    }
-                });
+                card.addEventListener('click', (e) => { if (!e.target.closest('button') && !e.target.closest('.wishlist-icon')) { const id = card.dataset.id; openProductDetail(products.find(p => p.id == id)); } });
             });
         }
 
-        // Product detail
+        function renderAllGrids() { renderGrid('featuredGrid', products.slice(0,3)); renderGrid('trendingGrid', products.slice(2,5)); renderGrid('dealsGrid', products); renderGrid('relatedGrid', products.slice(1,4)); }
+
         window.openProductDetail = (prod) => {
-            document.getElementById('detail-img').src = prod.img;
-            document.getElementById('detail-title').innerText = prod.name;
-            document.getElementById('detail-price').innerText = '$' + prod.price;
-            document.getElementById('detail-desc').innerText = prod.desc;
-            document.getElementById('detail-rating').innerHTML = '⭐'.repeat(prod.rating) + '☆'.repeat(5-prod.rating);
-            document.getElementById('buyNowBtn').onclick = () => { localStorage.setItem('checkoutProduct', JSON.stringify(prod)); showPage('checkout-page'); };
-            document.getElementById('addToCartDetailBtn').onclick = () => { addToCart(prod.id); alert('Added to cart'); };
-            window.currentProd = prod;
-            showPage('product-page');
+            $('#detail-img').attr('src', prod.img); $('#detail-title').text(prod.name); $('#detail-price').text('$'+prod.price); $('#detail-desc').text(prod.desc); $('#detail-rating').html('⭐'.repeat(prod.rating)+'☆'.repeat(5-prod.rating));
+            $('#buyNowBtn').off('click').on('click', ()=>{ localStorage.setItem('checkoutProduct', JSON.stringify(prod)); showPage('checkout-page'); });
+            $('#addToCartDetailBtn').off('click').on('click', ()=>{ addToCart(prod.id); alert('Added to cart'); });
+            window.currentProd = prod; showPage('product-page');
         };
 
-        // Add to cart
-        window.addToCart = (id, e) => { if(e) e.stopPropagation(); const prod = sampleProducts.find(p=>p.id===id); if(prod) {cart.push(prod); localStorage.setItem('cartZy', JSON.stringify(cart)); updateCartUI(); alert('Added to cart');}};
+        window.addToCart = (id, e) => { if(e) e.stopPropagation(); const prod = products.find(p=>p.id===id); if(prod) {cart.push(prod); localStorage.setItem('cartZy', JSON.stringify(cart)); updateCartUI(); alert('Added'); } };
+        function updateCartUI() { $('#cartList').html(cart.map(p=>`<div class="order-card"><img src="${p.img}" width="50"> ${p.name} - $${p.price}</div>`).join('') || 'Cart empty'); }
 
-        function updateCartUI() { document.getElementById('cartList').innerHTML = cart.map(p=>`<div class="order-card"><img src="${p.img}" width="50"> ${p.name} - $${p.price}</div>`).join('') || 'Cart empty'; }
+        window.toggleWishlist = (id, e) => { e.stopPropagation(); const prod = products.find(p=>p.id===id); const exists = wishlist.find(w=>w.id===id); if(exists) wishlist = wishlist.filter(w=>w.id!==id); else wishlist.push(prod); localStorage.setItem('wishlistZy', JSON.stringify(wishlist)); renderAllGrids(); $('#wishlistList').html(wishlist.map(p=>`<div class="order-card">${p.name}</div>`).join('') || 'Empty'); };
 
-        // Wishlist
-        window.toggleWishlist = (id, e) => { e.stopPropagation(); const prod = sampleProducts.find(p=>p.id===id); const exists = wishlist.find(w=>w.id===id); if(exists) wishlist = wishlist.filter(w=>w.id!==id); else wishlist.push(prod); localStorage.setItem('wishlistZy', JSON.stringify(wishlist)); renderAllGrids(); document.getElementById('wishlistList').innerHTML = wishlist.map(p=>`<div class="order-card">${p.name}</div>`).join('') || 'No items'; };
+        window.searchProducts = () => { const q = $('#searchInput').val().toLowerCase(); const f = products.filter(p=>p.name.toLowerCase().includes(q)); if(f.length) openProductDetail(f[0]); };
+        window.filterCategory = (cat) => { if(cat==='all'){ showPage('home-page'); renderAllGrids(); } else { const f = products.filter(p=>p.category===cat); if(f.length) openProductDetail(f[0]); else alert('no products'); } };
 
-        // search
-        window.searchProducts = () => { const q = document.getElementById('searchInput').value.toLowerCase(); const filtered = sampleProducts.filter(p => p.name.toLowerCase().includes(q)); if(filtered.length) openProductDetail(filtered[0]); };
-
-        // filter category
-        window.filterCategory = (cat) => { if(cat==='all') { renderAllGrids(); showPage('home-page'); } else { const filtered = sampleProducts.filter(p=>p.category===cat); if(filtered.length) openProductDetail(filtered[0]); else alert('No products in this category'); } };
-
-        // checkout
-        document.getElementById('checkoutForm').addEventListener('submit', (e) => {
+        // checkout submit
+        $('#checkoutForm').submit((e) => {
             e.preventDefault();
-            const order = {
-                id: Date.now(),
-                name: fullName.value,
-                phone: phone.value,
-                city: city.value,
-                address: address.value,
-                trx: trxId.value,
-                product: window.currentProd || sampleProducts[0],
-                date: new Date().toLocaleString(),
-                status: 'pending'
-            };
-            orders.push(order);
-            localStorage.setItem('ordersZy', JSON.stringify(orders));
-            alert('Order placed! TRX: '+order.trx);
-            showPage('orders-page');
-            renderOrders();
+            const order = { id: Date.now(), name: $('#fullName').val(), phone: $('#phone').val(), city: $('#city').val(), address: $('#address').val(), trx: $('#trxId').val(), product: window.currentProd || products[0], date: new Date().toLocaleString(), status: 'pending' };
+            orders.push(order); localStorage.setItem('ordersZy', JSON.stringify(orders)); alert('Order placed!'); showPage('orders-page'); renderOrders();
+            // optional: firebase demo write
+            db.collection('orders').add(order).then(()=> console.log('order also saved to firestore')).catch(e=>console.warn('permission?',e));
         });
 
-        function renderOrders() {
-            const list = document.getElementById('ordersList');
-            if (!list) return;
-            list.innerHTML = orders.map(o => `<div class="order-card"><img src="${o.product?.img||sampleProducts[0].img}" width="50"> <div><strong>${o.product?.name||'Order'}</strong><br>TRX: ${o.trx}</div> <span class="order-status status-${o.status==='pending'?'pending':o.status}">${o.status}</span></div>`).join('') || 'No orders.';
-        }
+        function renderOrders() { $('#ordersList').html(orders.map(o=>`<div class="order-card"><img src="${o.product?.img||products[0].img}" width="50"> <div><strong>${o.product?.name||'Order'}</strong><br>TRX: ${o.trx}</div> <span class="order-status status-${o.status==='pending'?'pending':o.status}">${o.status}</span></div>`).join('') || 'No orders'); }
 
         // admin functions
-        window.showAdminPanel = () => { showPage('admin-page'); renderAdminOrders(); };
-        function renderAdminOrders() {
-            const ad = document.getElementById('adminOrdersList');
-            if (!ad) return;
-            ad.innerHTML = orders.map((o,i) => `<div style="background:var(--surface); padding:1.5rem; border-radius:20px; margin-bottom:1rem;"><strong>${o.name}</strong> - ${o.phone}<br>TRX: ${o.trx}<br>Status: 
-                <select onchange="updateOrderStatus(${i}, this.value)">
-                    <option value="pending" ${o.status==='pending'?'selected':''}>Pending</option>
-                    <option value="confirmed" ${o.status==='confirmed'?'selected':''}>Confirmed</option>
-                    <option value="processing" ${o.status==='processing'?'selected':''}>Processing</option>
-                    <option value="shipped" ${o.status==='shipped'?'selected':''}>Shipped</option>
-                    <option value="delivered" ${o.status==='delivered'?'selected':''}>Delivered</option>
-                </select>
-            </div>`).join('');
-        }
+        window.showPage = (pageId) => { $('.page').removeClass('active-page'); $('#'+pageId).addClass('active-page'); if(pageId==='cart-page') updateCartUI(); if(pageId==='wishlist-page') $('#wishlistList').html(wishlist.map(p=>`<div class="order-card">${p.name}</div>`).join('')||'Empty'); if(pageId==='orders-page') renderOrders(); if(pageId==='admin-page') renderAdminOrders(); };
+        window.openCheckout = () => showPage('checkout-page');
+        window.toggleTheme = () => $('body').toggleClass('dark');
 
+        function renderAdminOrders() {
+            let html = ''; orders.forEach((o,i)=> { html += `<div style="background:var(--surface);padding:1.5rem;border-radius:20px;margin-bottom:1rem;"><strong>${o.name}</strong> ${o.phone}<br>TRX: ${o.trx}<br>Status: <select onchange="updateOrderStatus(${i}, this.value)"><option value="pending" ${o.status==='pending'?'selected':''}>Pending</option><option value="confirmed" ${o.status==='confirmed'?'selected':''}>Confirmed</option><option value="processing" ${o.status==='processing'?'selected':''}>Processing</option><option value="shipped" ${o.status==='shipped'?'selected':''}>Shipped</option><option value="delivered" ${o.status==='delivered'?'selected':''}>Delivered</option></select></div>`; });
+            $('#adminOrdersList').html(html || 'No orders');
+        }
         window.updateOrderStatus = (idx, status) => { orders[idx].status = status; localStorage.setItem('ordersZy', JSON.stringify(orders)); renderAdminOrders(); renderOrders(); };
-        window.adminAddSampleProduct = () => { const newProd = {id:Date.now(), name:'Admin Special', price:59, old:99, discount:'-40%', img:'https://source.unsplash.com/400x400/?new', rating:5, category:'Toys', desc:'New sample'}; sampleProducts.push(newProd); renderAllGrids(); alert('Product added'); };
-        window.adminDeleteLastProduct = () => { if(sampleProducts.length>3) { sampleProducts.pop(); renderAllGrids(); alert('Last deleted'); } };
+        window.adminAddSampleProduct = () => { let newP = {id:Date.now(), name:'Admin Special', price:59, old:99, discount:'-40%', img:'https://source.unsplash.com/400x400/?new', rating:5, category:'Toys', desc:'New sample'}; products.push(newP); renderAllGrids(); alert('Product added'); };
+        window.adminDeleteLastProduct = () => { if(products.length>3) { products.pop(); renderAllGrids(); alert('Last deleted'); } };
 
         // profile
-        window.updateProfile = () => { profile = { name: document.getElementById('profileName').value, phone: document.getElementById('profilePhone').value, address: document.getElementById('profileAddress').value }; localStorage.setItem('profileZy', JSON.stringify(profile)); alert('Profile saved'); };
+        window.updateProfile = () => { profile = { name: $('#profileName').val(), phone: $('#profilePhone').val(), address: $('#profileAddress').val() }; localStorage.setItem('profileZy', JSON.stringify(profile)); alert('Profile saved'); };
         window.updateAddress = () => { alert('Address updated (demo)'); };
 
-        // show page
-        window.showPage = (pageId) => { document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page')); document.getElementById(pageId).classList.add('active-page'); if(pageId==='cart-page') updateCartUI(); if(pageId==='wishlist-page') document.getElementById('wishlistList').innerHTML = wishlist.map(p=>`<div class="order-card">${p.name}</div>`).join('')||'Empty'; if(pageId==='orders-page') renderOrders(); if(pageId==='dashboard-page') { document.getElementById('profileName').value = profile.name||''; document.getElementById('profilePhone').value = profile.phone||''; document.getElementById('profileAddress').value = profile.address||''; } };
-        window.openCheckout = () => showPage('checkout-page');
-        window.toggleTheme = () => document.body.classList.toggle('dark');
-
         // initial
-        renderAllGrids(); renderOrders(); updateCartUI();
-        window.currentProd = sampleProducts[0];
+        renderAllGrids(); renderOrders(); updateCartUI(); window.currentProd = products[0];
+
+        // helper to show sections inside dashboard
+        window.$ = jQuery;
     </script>
 </body>
 </html>

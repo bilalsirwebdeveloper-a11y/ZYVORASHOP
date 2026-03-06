@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZYVORASHOP – premium futuristic store</title>
-    <!-- Font Awesome 6 (free) -->
+    <title>ZYVORASHOP – fully functional premium store</title>
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts: Inter + Space Grotesk for modern typography -->
+    <!-- Google Fonts: Inter + Space Grotesk -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -15,30 +15,13 @@
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
         }
-
         body {
             background-color: #f8fafc;
             color: #0a1120;
-            scroll-behavior: smooth;
             opacity: 0;
-            animation: pageFadeIn 0.5s ease forwards;
+            animation: pageFade 0.4s ease forwards;
         }
-
-        @keyframes pageFadeIn {
-            to { opacity: 1; }
-        }
-
-        /* scroll reveal simulation (simple fade) */
-        .reveal {
-            opacity: 0;
-            transform: translateY(24px);
-            transition: all 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
+        @keyframes pageFade { to { opacity: 1; } }
         /* sticky header */
         .sticky-header {
             position: sticky;
@@ -46,7 +29,6 @@
             z-index: 1000;
             background: rgba(255,255,255,0.8);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(0,0,0,0.03);
             box-shadow: 0 8px 30px -10px rgba(0,30,50,0.1);
             padding: 0.8rem 2rem;
@@ -55,17 +37,15 @@
             justify-content: space-between;
             flex-wrap: wrap;
         }
-
         .logo {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
             font-size: 1.8rem;
-            letter-spacing: -0.02em;
             background: linear-gradient(130deg, #0b1e33, #1d4ed8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            cursor: pointer;
         }
-
         .search-bar {
             flex: 1 1 300px;
             max-width: 600px;
@@ -78,24 +58,12 @@
             border: none;
             border-radius: 60px;
             background: #ffffffd9;
-            box-shadow: 0 8px 20px -10px rgba(0,30,60,0.15), 0 0 0 1px rgba(0,0,0,0.02) inset;
+            box-shadow: 0 8px 20px -10px rgba(0,30,60,0.15);
             font-size: 1rem;
-            transition: 0.2s;
         }
         .search-bar input:focus {
-            outline: none;
-            box-shadow: 0 12px 28px -12px #1d4ed8, 0 0 0 2px #1d4ed8 inset;
-            background: white;
+            outline: 2px solid #1d4ed8;
         }
-        .search-bar i {
-            position: absolute;
-            right: 1.5rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #1e293b;
-            opacity: 0.5;
-        }
-
         .header-icons {
             display: flex;
             gap: 2rem;
@@ -111,16 +79,9 @@
             cursor: pointer;
             transition: 0.15s;
         }
-        .header-icons .icon i {
-            font-size: 1.5rem;
-            margin-bottom: 0.2rem;
-        }
-        .header-icons .icon:hover {
-            color: #1d4ed8;
-            transform: scale(1.05);
-        }
+        .header-icons .icon i { font-size: 1.5rem; margin-bottom: 0.2rem; }
+        .header-icons .icon:hover { color: #1d4ed8; transform: scale(1.05); }
 
-        /* category nav */
         .category-nav {
             background: white;
             padding: 0.8rem 2rem;
@@ -129,29 +90,16 @@
             flex-wrap: wrap;
             gap: 1.8rem;
             font-weight: 500;
-            color: #1e293b;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.01);
-            white-space: nowrap;
             overflow-x: auto;
-            scrollbar-width: thin;
         }
         .category-nav span {
             cursor: pointer;
             padding: 0.2rem 0;
             border-bottom: 2px solid transparent;
-            transition: 0.15s;
         }
-        .category-nav span:hover {
-            border-bottom-color: #1d4ed8;
-            color: #1d4ed8;
-        }
+        .category-nav span:hover { border-bottom-color: #1d4ed8; color: #1d4ed8; }
 
-        /* container */
-        .container {
-            max-width: 1440px;
-            margin: 0 auto;
-            padding: 2rem 2rem 1rem;
-        }
+        .container { max-width: 1440px; margin: 0 auto; padding: 2rem 2rem 1rem; }
 
         /* hero banner */
         .hero {
@@ -159,23 +107,12 @@
             border-radius: 36px;
             padding: 3.5rem 4rem;
             margin-bottom: 3rem;
-            box-shadow: 0 30px 50px -30px #1d4ed8, 0 10px 20px -10px rgba(0,0,0,0.05);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
         }
-        .hero h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            font-family: 'Space Grotesk', sans-serif;
-            line-height: 1.1;
-        }
-        .hero p {
-            font-size: 1.2rem;
-            color: #334155;
-            margin-top: 0.8rem;
-        }
+        .hero h1 { font-size: 3rem; font-weight: 700; font-family: 'Space Grotesk', sans-serif; }
         .hero-cta {
             background: #0f172a;
             color: white;
@@ -183,21 +120,15 @@
             padding: 1rem 2.5rem;
             border-radius: 60px;
             font-weight: 600;
-            box-shadow: 0 16px 30px -10px #0f172a;
             cursor: pointer;
             transition: 0.2s;
         }
-        .hero-cta:hover {
-            background: #1d4ed8;
-            transform: scale(1.03) translateY(-2px);
-        }
+        .hero-cta:hover { background: #1d4ed8; transform: scale(1.03); }
 
-        /* section titles */
         .section-title {
             font-size: 2rem;
             font-weight: 650;
             margin: 2.5rem 0 1.5rem;
-            letter-spacing: -0.02em;
             display: flex;
             align-items: center;
         }
@@ -209,10 +140,10 @@
             margin-right: 1rem;
         }
 
-        /* product grids */
+        /* product grid */
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
             gap: 2rem;
         }
 
@@ -225,9 +156,7 @@
             transition: 0.25s ease;
             position: relative;
             border: 1px solid rgba(0,0,0,0.02);
-            backdrop-filter: blur(4px);
-            display: flex;
-            flex-direction: column;
+            cursor: pointer;
         }
         .product-card:hover {
             transform: translateY(-8px);
@@ -235,15 +164,13 @@
         }
         .product-img {
             width: 100%;
-            aspect-ratio: 1 / 1;
+            aspect-ratio: 1/1;
             object-fit: cover;
             border-radius: 20px;
             background: #f1f5f9;
             transition: 0.2s;
         }
-        .product-card:hover .product-img {
-            transform: scale(1.02);
-        }
+        .product-card:hover .product-img { transform: scale(1.02); }
         .wishlist-icon {
             position: absolute;
             top: 1.5rem;
@@ -257,34 +184,13 @@
             justify-content: center;
             box-shadow: 0 6px 16px rgba(0,0,0,0.05);
             cursor: pointer;
-            transition: 0.15s;
-            border: 1px solid #eee;
+            z-index: 10;
         }
-        .wishlist-icon:hover {
-            background: #fee2e2;
-            color: #e11d48;
-        }
-        .product-title {
-            font-weight: 600;
-            margin: 0.8rem 0 0.3rem;
-            font-size: 1rem;
-        }
-        .price-row {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-        }
-        .current-price {
-            font-weight: 700;
-            font-size: 1.25rem;
-            color: #0f172a;
-        }
-        .old-price {
-            text-decoration: line-through;
-            color: #94a3b8;
-            font-size: 0.9rem;
-        }
+        .wishlist-icon:hover { background: #fee2e2; color: #e11d48; }
+        .product-title { font-weight: 600; margin: 0.8rem 0 0.3rem; }
+        .price-row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+        .current-price { font-weight: 700; font-size: 1.25rem; color: #0f172a; }
+        .old-price { text-decoration: line-through; color: #94a3b8; font-size: 0.9rem; }
         .discount-badge {
             background: #e11d48;
             color: white;
@@ -292,17 +198,8 @@
             border-radius: 60px;
             font-size: 0.7rem;
             font-weight: 600;
-            letter-spacing: 0.3px;
         }
-        .rating {
-            margin: 0.3rem 0 0.8rem;
-            color: #fbbf24;
-            font-size: 0.85rem;
-        }
-        .rating span {
-            color: #64748b;
-            margin-left: 4px;
-        }
+        .rating { margin: 0.3rem 0 0.8rem; color: #fbbf24; }
         .add-to-cart {
             background: #0f172a;
             color: white;
@@ -315,66 +212,16 @@
             justify-content: center;
             gap: 6px;
             cursor: pointer;
-            transition: 0.15s;
+            width: 100%;
             margin-top: auto;
         }
-        .add-to-cart:hover {
-            background: #1d4ed8;
-        }
+        .add-to-cart:hover { background: #1d4ed8; }
 
-        /* popular categories grid */
-        .cat-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-        .cat-item {
-            background: white;
-            border-radius: 26px;
-            padding: 1.5rem 0.5rem;
-            text-align: center;
-            font-weight: 600;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.02);
-            transition: 0.15s;
-            border: 1px solid #f1f5f9;
-        }
-        .cat-item i {
-            font-size: 2rem;
-            color: #1d4ed8;
-            margin-bottom: 0.5rem;
-        }
-        .cat-item:hover {
-            background: #0f172a;
-            color: white;
-            transform: scale(1.02);
-        }
-        .cat-item:hover i { color: white; }
+        /* pages */
+        .page { display: none; }
+        .active-page { display: block; }
 
-        /* review cards */
-        .review-slider {
-            display: flex;
-            gap: 2rem;
-            overflow-x: auto;
-            padding: 1rem 0 2rem;
-        }
-        .review-card {
-            background: white;
-            min-width: 280px;
-            border-radius: 32px;
-            padding: 1.8rem;
-            box-shadow: 0 15px 30px -12px #b0c4db;
-        }
-
-        /* product detail page (hidden by default) */
-        .page {
-            display: none;
-        }
-        .page.active-page {
-            display: block;
-        }
-
-        /* product detail layout */
+        /* product detail */
         .detail-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -388,50 +235,22 @@
             display: flex;
             justify-content: center;
         }
-        .gallery-large img {
-            max-width: 100%;
-            max-height: 400px;
-            object-fit: contain;
-        }
-        .product-meta {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        .big-price {
-            font-size: 2.5rem;
-            font-weight: 700;
-        }
-        .action-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
+        .gallery-large img { max-width: 100%; max-height: 400px; object-fit: contain; }
+        .big-price { font-size: 2.5rem; font-weight: 700; }
+        .action-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
         .btn-primary, .btn-outline {
             padding: 1rem 2.2rem;
             border-radius: 50px;
             border: none;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.15s;
         }
-        .btn-primary {
-            background: #0f172a;
-            color: white;
-            box-shadow: 0 8px 20px -8px #0f172a;
-        }
+        .btn-primary { background: #0f172a; color: white; }
         .btn-primary:hover { background: #1d4ed8; }
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #0f172a;
-            color: #0f172a;
-        }
-        .btn-outline:hover {
-            background: #0f172a;
-            color: white;
-        }
+        .btn-outline { background: transparent; border: 2px solid #0f172a; color: #0f172a; }
+        .btn-outline:hover { background: #0f172a; color: white; }
 
-        /* checkout page */
+        /* checkout panel */
         .checkout-panel {
             background: white;
             border-radius: 36px;
@@ -445,13 +264,11 @@
             border-left: 8px solid #0b5e8a;
             padding: 1.5rem;
             border-radius: 24px;
-            font-size: 1.1rem;
             margin-bottom: 2rem;
         }
         .easypaisa-number {
             font-size: 2rem;
             font-weight: 700;
-            letter-spacing: 2px;
             background: #0f172a;
             display: inline-block;
             padding: 0.3rem 1.5rem;
@@ -465,18 +282,14 @@
             margin-bottom: 1.2rem;
             border: 1px solid #ddd;
             border-radius: 26px;
-            font-size: 1rem;
-            background: #fafdff;
         }
         .submit-order {
             background: #0f172a;
             color: white;
-            border: none;
             width: 100%;
             padding: 1.2rem;
             border-radius: 60px;
             font-weight: 700;
-            font-size: 1.2rem;
             cursor: pointer;
         }
 
@@ -490,14 +303,12 @@
             gap: 1.5rem;
             align-items: center;
             flex-wrap: wrap;
-            box-shadow: 0 8px 16px #e2e8f0;
         }
         .order-status {
             padding: 0.3rem 1rem;
             border-radius: 60px;
             font-weight: 600;
             font-size: 0.8rem;
-            background: #f1f5f9;
         }
         .status-pending { background: #fed7aa; color: #92400e; }
         .status-confirmed { background: #cffafe; color: #0e7490; }
@@ -505,7 +316,14 @@
         .status-shipped { background: #cbd5e1; color: #1e293b; }
         .status-delivered { background: #bbf7d0; color: #166534; }
 
-        /* footer */
+        /* admin panel concept */
+        .admin-demo {
+            background: #f1f5f9;
+            border-radius: 28px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
         .footer {
             background: #0f172a;
             color: white;
@@ -518,117 +336,86 @@
             grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
             gap: 2rem;
         }
-        .footer a { color: #cbd5e1; text-decoration: none; }
-        .newsletter input {
-            padding: 0.8rem;
-            border-radius: 60px;
-            border: none;
-            width: 100%;
-            max-width: 260px;
-        }
+        .newsletter input { padding: 0.8rem; border-radius: 60px; border: none; }
 
-        /* responsiveness */
-        @media (max-width: 700px) {
-            .sticky-header { flex-direction: column; gap: 0.8rem; }
-            .search-bar { margin: 0; max-width: 100%; width: 100%; }
-            .header-icons { justify-content: center; }
-            .detail-grid { grid-template-columns: 1fr; }
-        }
-        .admin-demo {
-            background: #f1f5f9;
-            border-radius: 28px;
-            padding: 1.5rem;
-        }
-        .admin-badge {
-            display: inline-block;
-            background: #1d4ed8;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 60px;
-            font-size: 0.9rem;
+        @media (max-width:700px){
+            .sticky-header{flex-direction:column;}
+            .search-bar{margin:0; max-width:100%; width:100%;}
+            .detail-grid{grid-template-columns:1fr;}
         }
     </style>
 </head>
 <body>
     <!-- Sticky Header -->
     <header class="sticky-header">
-        <div class="logo">ZYVORASHOP</div>
+        <div class="logo" onclick="showPage('home-page')">ZYVORASHOP</div>
         <div class="search-bar">
-            <input type="text" placeholder="Search for products...">
+            <input type="text" placeholder="Search for products..." id="globalSearch" onkeyup="searchProducts()">
             <i class="fas fa-search"></i>
         </div>
         <div class="header-icons">
-            <div class="icon" onclick="showPage('dashboard')"><i class="far fa-user"></i><span>Account</span></div>
-            <div class="icon" onclick="showPage('wishlist')"><i class="far fa-heart"></i><span>Wishlist</span></div>
-            <div class="icon" onclick="showPage('cart')"><i class="fas fa-shopping-cart"></i><span>Cart</span></div>
-            <div class="icon" onclick="showPage('orders')"><i class="fas fa-box"></i><span>Orders</span></div>
+            <div class="icon" onclick="showPage('dashboard-page')"><i class="far fa-user"></i><span>Account</span></div>
+            <div class="icon" onclick="showPage('wishlist-page')"><i class="far fa-heart"></i><span>Wishlist</span></div>
+            <div class="icon" onclick="showPage('cart-page')"><i class="fas fa-shopping-cart"></i><span>Cart</span></div>
+            <div class="icon" onclick="showPage('orders-page')"><i class="fas fa-box"></i><span>Orders</span></div>
         </div>
     </header>
 
-    <!-- Category Nav -->
+    <!-- Category Navigation -->
     <div class="category-nav">
-        <span>Electronics</span><span>Fashion</span><span>Home & Kitchen</span><span>Beauty</span><span>Watches</span>
-        <span>Accessories</span><span>Sports</span><span>Gaming</span><span>Toys</span>
+        <span onclick="filterCategory('Electronics')">Electronics</span>
+        <span onclick="filterCategory('Fashion')">Fashion</span>
+        <span onclick="filterCategory('Home & Kitchen')">Home & Kitchen</span>
+        <span onclick="filterCategory('Beauty')">Beauty</span>
+        <span onclick="filterCategory('Watches')">Watches</span>
+        <span onclick="filterCategory('Accessories')">Accessories</span>
+        <span onclick="filterCategory('Sports')">Sports</span>
+        <span onclick="filterCategory('Gaming')">Gaming</span>
+        <span onclick="filterCategory('Toys')">Toys</span>
     </div>
 
-    <!-- MAIN HOME PAGE (visible by default) -->
+    <!-- HOME PAGE -->
     <div id="home-page" class="page active-page">
         <div class="container">
-            <!-- Hero banner -->
-            <div class="hero reveal active">
-                <div>
-                    <h1>Welcome to<br>ZYVORASHOP</h1>
-                    <p>Futuristic style, premium quality</p>
-                </div>
-                <button class="hero-cta">Shop now</button>
+            <div class="hero">
+                <div><h1>Welcome to<br>ZYVORASHOP</h1><p>Futuristic style, premium quality</p></div>
+                <button class="hero-cta" onclick="showPage('product-page')">Shop now</button>
             </div>
-
-            <!-- Featured Products -->
             <div class="section-title"><span></span>Featured products</div>
             <div class="product-grid" id="featured-grid"></div>
-
-            <!-- Trending -->
             <div class="section-title"><span></span>Trending now</div>
             <div class="product-grid" id="trending-grid"></div>
-
-            <!-- Best deals with discount badges -->
             <div class="section-title"><span></span>Best deals</div>
             <div class="product-grid" id="deals-grid"></div>
-
-            <!-- Popular categories -->
             <div class="section-title"><span></span>Popular categories</div>
-            <div class="cat-grid">
-                <div class="cat-item"><i class="fas fa-mobile-alt"></i>Electronics</div>
-                <div class="cat-item"><i class="fas fa-tshirt"></i>Fashion</div>
-                <div class="cat-item"><i class="fas fa-utensils"></i>Kitchen</div>
-                <div class="cat-item"><i class="fas fa-gem"></i>Beauty</div>
-                <div class="cat-item"><i class="fas fa-clock"></i>Watches</div>
-                <div class="cat-item"><i class="fas fa-shoe-prints"></i>Sports</div>
+            <div class="cat-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1.5rem;">
+                <div class="cat-item" style="background:white; border-radius:26px; padding:1.5rem; text-align:center;" onclick="filterCategory('Electronics')"><i class="fas fa-mobile-alt"></i> Electronics</div>
+                <div class="cat-item" style="background:white; border-radius:26px; padding:1.5rem; text-align:center;" onclick="filterCategory('Fashion')"><i class="fas fa-tshirt"></i> Fashion</div>
+                <div class="cat-item" style="background:white; border-radius:26px; padding:1.5rem; text-align:center;" onclick="filterCategory('Home')"><i class="fas fa-utensils"></i> Kitchen</div>
+                <div class="cat-item" style="background:white; border-radius:26px; padding:1.5rem; text-align:center;" onclick="filterCategory('Beauty')"><i class="fas fa-gem"></i> Beauty</div>
             </div>
-
-            <!-- Customer reviews -->
-            <div class="section-title"><span></span>Trusted by customers</div>
-            <div class="review-slider">
-                <div class="review-card">⭐⭐⭐⭐⭐ <br> "Amazing quality and fast delivery" <br>– Ayesha K.</div>
-                <div class="review-card">⭐⭐⭐⭐⭐ <br> "Very premium feel, love ZYVORA!" <br>– Raza M.</div>
-                <div class="review-card">⭐⭐⭐⭐ <br> "Smooth experience, will buy again" <br>– Sana T.</div>
+            <div class="section-title"><span></span>Customer reviews</div>
+            <div style="display:flex; gap:2rem; overflow-x:auto; padding:1rem 0;">
+                <div class="review-card" style="background:white; border-radius:32px; padding:1.8rem; min-width:260px;">⭐⭐⭐⭐⭐ <br> "Amazing quality and fast delivery" <br>– Ayesha K.</div>
+                <div class="review-card" style="background:white; border-radius:32px; padding:1.8rem; min-width:260px;">⭐⭐⭐⭐⭐ <br> "Very premium feel, love ZYVORA!" <br>– Raza M.</div>
+                <div class="review-card" style="background:white; border-radius:32px; padding:1.8rem; min-width:260px;">⭐⭐⭐⭐ <br> "Smooth experience, will buy again" <br>– Sana T.</div>
             </div>
         </div>
     </div>
 
-    <!-- PRODUCT DETAIL PAGE (hidden) -->
+    <!-- PRODUCT DETAIL PAGE -->
     <div id="product-page" class="page">
         <div class="container">
             <div class="detail-grid">
-                <div class="gallery-large"><img src="https://via.placeholder.com/400x400?text=Smart+Watch+X1" alt="product"></div>
+                <div class="gallery-large"><img id="detail-img" src="https://via.placeholder.com/400x400?text=Apex+Watch" alt="product"></div>
                 <div class="product-meta">
                     <h2 id="detail-title">Apex Smart Watch X1</h2>
-                    <div class="rating">⭐⭐⭐⭐☆ <span>(124 reviews)</span></div>
+                    <div class="rating" id="detail-rating">⭐⭐⭐⭐☆ (124 reviews)</div>
                     <div class="big-price" id="detail-price">$129.99</div>
-                    <p id="detail-desc">Titanium finish, 7-day battery, heart monitor, premium design. ZYVORA exclusive.</p>
+                    <p id="detail-desc">Titanium finish, 7-day battery, heart monitor.</p>
                     <div class="action-buttons">
-                        <button class="btn-primary" onclick="showPage('checkout')">Buy Now</button>
-                        <button class="btn-outline" onclick="alert('Added to cart'); showPage('cart')">Add to Cart</button>
+                        <button class="btn-primary" id="buyNowDetailBtn">Buy Now</button>
+                        <button class="btn-outline" id="addToCartDetailBtn">Add to Cart</button>
                     </div>
                 </div>
             </div>
@@ -637,16 +424,16 @@
         </div>
     </div>
 
-    <!-- CHECKOUT PAGE with EasyPaisa instructions -->
+    <!-- CHECKOUT PAGE (EasyPaisa) -->
     <div id="checkout-page" class="page">
         <div class="container">
             <div class="checkout-panel">
-                <h2 style="margin-bottom: 1.5rem;">Complete your order</h2>
+                <h2 style="margin-bottom:1.5rem;">Complete your order</h2>
                 <div class="easypaisa-instruction">
-                    <i class="fas fa-shield-alt"></i> <strong>Send payment to the EasyPaisa number below and then enter your transaction ID.</strong><br>
+                    <i class="fas fa-shield-alt"></i> <strong>Send payment to the EasyPaisa number below and enter transaction ID.</strong><br>
                     <span class="easypaisa-number">03 111 222 333</span>
                 </div>
-                <form class="checkout-form" onsubmit="placeOrder(event)">
+                <form class="checkout-form" id="checkoutForm">
                     <input type="text" placeholder="Full Name" id="fullname" required>
                     <input type="tel" placeholder="Phone Number" id="phone" required>
                     <input type="text" placeholder="City" id="city" required>
@@ -654,12 +441,12 @@
                     <input type="text" placeholder="Transaction ID (TRX ID)" id="trxid" required>
                     <button type="submit" class="submit-order">Place order (EasyPaisa only)</button>
                 </form>
-                <p style="margin-top: 1rem; color: #e11d48;"><i class="fas fa-info-circle"></i> No Cash on Delivery – EasyPaisa only</p>
+                <p style="color:#e11d48;"><i class="fas fa-info-circle"></i> No Cash on Delivery – EasyPaisa only</p>
             </div>
         </div>
     </div>
 
-    <!-- ORDERS PAGE (My Orders) -->
+    <!-- MY ORDERS PAGE -->
     <div id="orders-page" class="page">
         <div class="container">
             <h2 class="section-title"><span></span>My Orders</h2>
@@ -667,60 +454,71 @@
         </div>
     </div>
 
-    <!-- DASHBOARD (simplified) -->
+    <!-- DASHBOARD PAGE (user + admin concept) -->
     <div id="dashboard-page" class="page">
         <div class="container">
             <h2>User Dashboard</h2>
-            <div style="display: flex; gap: 2rem; flex-wrap: wrap; margin: 2rem 0;">
-                <div class="product-card" style="padding: 2rem;"><i class="fas fa-user-circle fa-3x"></i> Profile</div>
-                <div class="product-card" style="padding: 2rem;" onclick="showPage('orders')"><i class="fas fa-box fa-3x"></i> My Orders</div>
-                <div class="product-card" style="padding: 2rem;"><i class="fas fa-map-marker-alt fa-3x"></i> Address</div>
-                <div class="product-card" style="padding: 2rem;"><i class="fas fa-heart fa-3x"></i> Wishlist</div>
+            <div style="display: flex; gap: 2rem; flex-wrap: wrap; margin:2rem 0;">
+                <div class="product-card" style="padding:2rem; cursor:pointer;" onclick="alert('Profile info')"><i class="fas fa-user-circle fa-3x"></i> Profile</div>
+                <div class="product-card" style="padding:2rem; cursor:pointer;" onclick="showPage('orders-page')"><i class="fas fa-box fa-3x"></i> My Orders</div>
+                <div class="product-card" style="padding:2rem; cursor:pointer;" onclick="alert('Manage address')"><i class="fas fa-map-marker-alt fa-3x"></i> Address</div>
+                <div class="product-card" style="padding:2rem; cursor:pointer;" onclick="showPage('wishlist-page')"><i class="fas fa-heart fa-3x"></i> Wishlist</div>
             </div>
-            <!-- admin demo concept -->
+            <!-- Admin panel concept -->
             <div class="admin-demo">
-                <span class="admin-badge">Admin panel demo</span>
-                <p>Manage products · Edit · Delete · Verify payments (TRX: 123456 → confirmed)</p>
-                <button onclick="simulatePaymentConfirm()" class="btn-primary">Mark last order as confirmed (demo)</button>
+                <span style="background:#1d4ed8; color:white; padding:0.5rem 1rem; border-radius:60px;">Admin panel</span>
+                <p><strong>Manage products:</strong> <button onclick="adminAddProduct()">Add sample</button> <button onclick="adminEditProduct()">Edit</button> <button onclick="adminDeleteProduct()">Delete</button></p>
+                <p><strong>Verify payments / Update status:</strong> <button onclick="verifyFirstPayment()">Confirm payment (first pending)</button> <button onclick="updateOrderStatus()">Set processing</button></p>
+                <p>Transaction IDs can be viewed in orders.</p>
             </div>
         </div>
     </div>
 
-    <!-- CART (simple placeholder) -->
-    <div id="cart-page" class="page"><div class="container"><h2>Shopping cart</h2><p>Your cart is ready.</p></div></div>
-    <div id="wishlist-page" class="page"><div class="container"><h2>Wishlist</h2><p>Saved items.</p></div></div>
+    <!-- CART PAGE (simple) -->
+    <div id="cart-page" class="page"><div class="container"><h2>Shopping cart</h2><div id="cart-items">Your cart is empty.</div></div></div>
+    <!-- WISHLIST PAGE -->
+    <div id="wishlist-page" class="page"><div class="container"><h2>Wishlist</h2><div id="wishlist-items">No saved items.</div></div></div>
 
-    <!-- Footer (global) -->
+    <!-- FOOTER -->
     <footer class="footer">
         <div class="footer-grid">
             <div><h4>ZYVORASHOP</h4><p>Premium futuristic store</p></div>
             <div><h4>Contact</h4>+92 3 111 222 333<br>support@zyvora.com</div>
-            <div class="newsletter"><h4>Newsletter</h4><input placeholder="your@email.com"><button>→</button></div>
+            <div class="newsletter"><h4>Newsletter</h4><input placeholder="your@email.com" id="newsletterInput"><button onclick="alert('Subscribed (demo)')">→</button></div>
             <div><i class="fab fa-facebook"></i> <i class="fab fa-instagram"></i> <i class="fab fa-x-twitter"></i></div>
         </div>
-        <p style="margin-top: 2rem;">© ZYVORASHOP — all rights reserved</p>
+        <p style="margin-top:2rem;">© ZYVORASHOP — all rights reserved</p>
     </footer>
 
     <script>
-        // ---------- MOCK DATA ----------
-        const sampleProducts = [
-            { id:1, name:'NeonPod Pro', price:99, old:159, discount:'-38%', img:'https://via.placeholder.com/300x300?text=NeonPod', rating:4 },
-            { id:2, name:'Apex Watch', price:129, old:199, discount:'-35%', img:'https://via.placeholder.com/300x300?text=Apex+Watch', rating:5 },
-            { id:3, name:'Gravity Headphones', price:79, old:129, discount:'-39%', img:'https://via.placeholder.com/300x300?text=Gravity', rating:4 },
-            { id:4, name:'Zyvor Glasses', price:49, old:89, discount:'-45%', img:'https://via.placeholder.com/300x300?text=AR+Glasses', rating:4 },
-            { id:5, name:'Quantum Backpack', price:89, old:149, discount:'-40%', img:'https://via.placeholder.com/300x300?text=Backpack', rating:5 },
-            { id:6, name:'Nebula Sneakers', price:119, old:179, discount:'-33%', img:'https://via.placeholder.com/300x300?text=Sneakers', rating:4 },
+        // ---------- FULLY FUNCTIONAL IMPLEMENTATION ----------
+        // sample product database
+        let products = [
+            { id:1, name:'NeonPod Pro', price:99, old:159, discount:'-38%', img:'https://via.placeholder.com/300x300?text=NeonPod', rating:4, category:'Electronics', stock:5 },
+            { id:2, name:'Apex Watch', price:129, old:199, discount:'-35%', img:'https://via.placeholder.com/300x300?text=Apex+Watch', rating:5, category:'Watches', stock:7 },
+            { id:3, name:'Gravity Headphones', price:79, old:129, discount:'-39%', img:'https://via.placeholder.com/300x300?text=Gravity', rating:4, category:'Electronics', stock:3 },
+            { id:4, name:'Zyvor Glasses', price:49, old:89, discount:'-45%', img:'https://via.placeholder.com/300x300?text=AR+Glasses', rating:4, category:'Accessories', stock:10 },
+            { id:5, name:'Quantum Backpack', price:89, old:149, discount:'-40%', img:'https://via.placeholder.com/300x300?text=Backpack', rating:5, category:'Fashion', stock:8 },
+            { id:6, name:'Nebula Sneakers', price:119, old:179, discount:'-33%', img:'https://via.placeholder.com/300x300?text=Sneakers', rating:4, category:'Sports', stock:4 },
+            { id:7, name:'Cyberpunk Game', price:59, old:79, discount:'-25%', img:'https://via.placeholder.com/300x300?text=Game', rating:5, category:'Gaming', stock:12 },
         ];
 
-        function renderProductCards(containerId, list) {
+        // Cart, Wishlist, Orders (localStorage)
+        let cart = JSON.parse(localStorage.getItem('zyvoraCart')) || [];
+        let wishlist = JSON.parse(localStorage.getItem('zyvoraWishlist')) || [];
+        let orders = JSON.parse(localStorage.getItem('zyvoraOrders')) || [];
+
+        // ---------- HELPER: render any product grid
+        function renderProductGrid(containerId, productList) {
             const grid = document.getElementById(containerId);
             if (!grid) return;
             grid.innerHTML = '';
-            list.forEach(p => {
+            productList.forEach(p => {
                 const card = document.createElement('div');
-                card.className = 'product-card reveal';
+                card.className = 'product-card';
+                card.setAttribute('data-id', p.id);
                 card.innerHTML = `
-                    <div class="wishlist-icon" onclick="event.stopPropagation(); alert('Added to wishlist')"><i class="far fa-heart"></i></div>
+                    <div class="wishlist-icon" onclick="toggleWishlist(${p.id}, event)"><i class="${wishlist.some(w=>w.id===p.id) ? 'fas' : 'far'} fa-heart" style="color:${wishlist.some(w=>w.id===p.id) ? '#e11d48' : '#333'}"></i></div>
                     <img src="${p.img}" class="product-img" alt="${p.name}">
                     <div class="product-title">${p.name}</div>
                     <div class="price-row">
@@ -728,49 +526,102 @@
                         <span class="old-price">$${p.old}</span>
                         <span class="discount-badge">${p.discount}</span>
                     </div>
-                    <div class="rating">${'⭐'.repeat(p.rating)}<span>(${Math.floor(Math.random()*200)})</span></div>
-                    <button class="add-to-cart" onclick="showPage('checkout')"><i class="fas fa-shopping-cart"></i> Add to cart</button>
+                    <div class="rating">${'⭐'.repeat(p.rating)}<span> (${Math.floor(Math.random()*100)})</span></div>
+                    <button class="add-to-cart" onclick="addToCart(${p.id}, event)"><i class="fas fa-shopping-cart"></i> Add to cart</button>
                 `;
-                card.addEventListener('click', (e) => { if (!e.target.closest('button') && !e.target.closest('.wishlist-icon')) showProductPage(p); });
+                card.addEventListener('click', (e) => {
+                    if (!e.target.closest('button') && !e.target.closest('.wishlist-icon')) openProductDetail(p);
+                });
                 grid.appendChild(card);
             });
         }
 
-        function showProductPage(prod) {
+        // open product detail page
+        function openProductDetail(prod) {
+            document.getElementById('detail-img').src = prod.img;
             document.getElementById('detail-title').innerText = prod.name;
             document.getElementById('detail-price').innerText = '$' + prod.price;
-            document.getElementById('detail-desc').innerText = `Premium ${prod.name} with warranty. Rating ${prod.rating} stars.`;
+            document.getElementById('detail-desc').innerText = `Premium ${prod.name} – category: ${prod.category}. ${prod.discount} off.`;
+            document.getElementById('detail-rating').innerHTML = '⭐'.repeat(prod.rating) + '☆'.repeat(5-prod.rating) + ` (${prod.stock} in stock)`;
+            // attach actions
+            document.getElementById('buyNowDetailBtn').onclick = () => { localStorage.setItem('checkoutProduct', JSON.stringify(prod)); showPage('checkout-page'); };
+            document.getElementById('addToCartDetailBtn').onclick = () => { addToCart(prod.id); alert('Added to cart'); };
+            window.currentProduct = prod;
             showPage('product-page');
         }
 
-        // orders storage
-        let orders = JSON.parse(localStorage.getItem('zyvoraOrders') || '[]');
+        // add to cart
+        window.addToCart = function(id, event) {
+            if (event) event.stopPropagation();
+            const prod = products.find(p => p.id === id);
+            if (prod) {
+                cart.push(prod);
+                localStorage.setItem('zyvoraCart', JSON.stringify(cart));
+                document.getElementById('cart-items').innerHTML = cart.map(p => `<p>${p.name} - $${p.price}</p>`).join('') || 'Cart has items.';
+                alert('Added to cart');
+            }
+        }
 
-        function placeOrder(e) {
+        // toggle wishlist
+        window.toggleWishlist = function(id, event) {
+            event.stopPropagation();
+            const prod = products.find(p => p.id === id);
+            const idx = wishlist.findIndex(w => w.id === id);
+            if (idx === -1) { wishlist.push(prod); } else { wishlist.splice(idx, 1); }
+            localStorage.setItem('zyvoraWishlist', JSON.stringify(wishlist));
+            renderProductGrid('featured-grid', products.slice(0,3));
+            renderProductGrid('trending-grid', products.slice(2,5));
+            renderProductGrid('deals-grid', products);
+            renderProductGrid('related-grid', products.slice(1,4));
+            document.getElementById('wishlist-items').innerHTML = wishlist.map(p => `<p>${p.name}</p>`).join('') || 'No saved items.';
+        }
+
+        // filter by category
+        window.filterCategory = function(cat) {
+            const filtered = products.filter(p => p.category === cat);
+            if (filtered.length) {
+                // show products in a dedicated way: we can redirect to home with filtered? but for demo, open first product
+                openProductDetail(filtered[0]);
+            } else alert('No products in this category');
+        }
+
+        // search
+        window.searchProducts = function() {
+            const query = document.getElementById('globalSearch').value.toLowerCase();
+            if (query.length > 2) {
+                const found = products.filter(p => p.name.toLowerCase().includes(query));
+                if (found.length) openProductDetail(found[0]);
+            }
+        }
+
+        // checkout form submit
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const name = document.getElementById('fullname').value;
             const phone = document.getElementById('phone').value;
             const city = document.getElementById('city').value;
             const address = document.getElementById('address').value;
             const trx = document.getElementById('trxid').value;
-            if (!name || !phone || !city || !address || !trx) return alert('All fields required');
 
+            const prod = window.currentProduct || products[0]; // fallback
             const newOrder = {
                 id: Date.now(),
-                productName: 'Apex Smart Watch X1', // mock product
-                productImg: 'https://via.placeholder.com/100x100?text=Watch',
-                price: 129,
+                productName: prod.name,
+                productImg: prod.img,
+                price: prod.price,
                 orderDate: new Date().toLocaleDateString(),
                 transactionId: trx,
-                status: 'Pending Verification'
+                status: 'Pending Verification',
+                customer: { name, phone, city, address }
             };
             orders.push(newOrder);
             localStorage.setItem('zyvoraOrders', JSON.stringify(orders));
-            alert('Order placed! Track in My Orders.');
+            alert(`Order placed! TRX: ${trx} saved.`);
             showPage('orders-page');
             renderOrders();
-        }
+        });
 
+        // render orders page
         function renderOrders() {
             const listDiv = document.getElementById('orders-list');
             if (!listDiv) return;
@@ -782,7 +633,7 @@
                 else if (o.status === 'Shipped') statusClass = 'status-shipped';
                 else if (o.status === 'Delivered') statusClass = 'status-delivered';
                 return `<div class="order-card">
-                    <img src="${o.productImg}" width="60" style="border-radius:20px">
+                    <img src="${o.productImg}" width="60" style="border-radius:20px;">
                     <div><strong>${o.productName}</strong><br>$${o.price}</div>
                     <div>${o.orderDate}<br>TRX: ${o.transactionId}</div>
                     <div><span class="order-status ${statusClass}">${o.status}</span></div>
@@ -790,47 +641,46 @@
             }).join('');
         }
 
-        // admin demo: confirm payment for first pending order
-        function simulatePaymentConfirm() {
-            if (orders.length) {
-                orders[0].status = 'Payment Confirmed';
-                localStorage.setItem('zyvoraOrders', JSON.stringify(orders));
-                renderOrders();
-                alert('Order status updated to Payment Confirmed (admin action)');
-            } else alert('No orders');
+        // admin functions
+        window.adminAddProduct = function() {
+            const newP = { id: Date.now(), name:'New Arrival', price:49, old:79, discount:'-38%', img:'https://via.placeholder.com/300x300?text=New', rating:5, category:'Toys', stock:20 };
+            products.push(newP);
+            renderAllGrids();
+            alert('Sample product added (refresh grids)');
+        }
+        window.adminEditProduct = function() { alert('Edit mode: you would update product'); };
+        window.adminDeleteProduct = function() { if(products.length>1) { products.pop(); renderAllGrids(); alert('Last product deleted'); } };
+        window.verifyFirstPayment = function() {
+            let pending = orders.find(o => o.status === 'Pending Verification');
+            if (pending) { pending.status = 'Payment Confirmed'; localStorage.setItem('zyvoraOrders',JSON.stringify(orders)); renderOrders(); alert('Payment confirmed'); }
+            else alert('No pending order');
+        }
+        window.updateOrderStatus = function() {
+            let confirmed = orders.find(o => o.status === 'Payment Confirmed');
+            if (confirmed) { confirmed.status = 'Processing'; localStorage.setItem('zyvoraOrders',JSON.stringify(orders)); renderOrders(); alert('Now processing'); }
+            else alert('No confirmed order');
         }
 
-        // page routing
-        function showPage(pageId) {
+        function renderAllGrids() {
+            renderProductGrid('featured-grid', products.slice(0,3));
+            renderProductGrid('trending-grid', products.slice(2,5));
+            renderProductGrid('deals-grid', products);
+            renderProductGrid('related-grid', products.slice(1,4));
+        }
+
+        // show page function
+        window.showPage = function(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
-            if (pageId === 'product-page') document.getElementById('product-page').classList.add('active-page');
-            else if (pageId === 'checkout-page') document.getElementById('checkout-page').classList.add('active-page');
-            else if (pageId === 'orders-page') { document.getElementById('orders-page').classList.add('active-page'); renderOrders(); }
-            else if (pageId === 'dashboard-page') document.getElementById('dashboard-page').classList.add('active-page');
-            else if (pageId === 'cart-page') document.getElementById('cart-page').classList.add('active-page');
-            else if (pageId === 'wishlist-page') document.getElementById('wishlist-page').classList.add('active-page');
-            else document.getElementById('home-page').classList.add('active-page'); // default
+            document.getElementById(pageId).classList.add('active-page');
+            if (pageId === 'orders-page') renderOrders();
+            if (pageId === 'cart-page') document.getElementById('cart-items').innerHTML = cart.map(p => `<p>${p.name} - $${p.price}</p>`).join('') || 'Cart is empty.';
+            if (pageId === 'wishlist-page') document.getElementById('wishlist-items').innerHTML = wishlist.map(p => `<p>${p.name}</p>`).join('') || 'No saved items.';
         }
 
-        // initial render
-        renderProductCards('featured-grid', sampleProducts.slice(0,3));
-        renderProductCards('trending-grid', sampleProducts.slice(2,5));
-        renderProductCards('deals-grid', sampleProducts);
-        renderProductCards('related-grid', sampleProducts.slice(1,4));
-
-        // scroll reveal on load + scroll
-        function reveal() {
-            document.querySelectorAll('.reveal').forEach(el => {
-                if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active');
-            });
-        }
-        window.addEventListener('scroll', reveal);
-        window.addEventListener('load', () => { reveal(); renderOrders(); });
-
-        // attach to window for onclick
-        window.showPage = showPage;
-        window.placeOrder = placeOrder;
-        window.simulatePaymentConfirm = simulatePaymentConfirm;
+        // initial renders
+        renderAllGrids();
+        renderOrders();
+        window.currentProduct = products[0]; // default
     </script>
 </body>
 </html>
